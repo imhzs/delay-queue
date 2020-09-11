@@ -1,0 +1,22 @@
+{
+    "name": "Lazy/delay-queue",
+    "description": "Delay queue",
+    "type": "project",
+    "require": {
+        "php": ">7.2",
+        "ext-swoole": "^4.4.0",
+        "ext-posix": "*",
+        "ext-pcntl": "*",
+        "ext-redis": "*",
+        "ext-json": "*",
+        "psr/container": "^1.0",
+        "monolog/monolog": "^1.0"
+    },
+    "license": "MIT",
+    "minimum-stability": "beta",
+    "autoload": {
+        "psr-4": {
+            "Lazy\\DelayQueue\\": "src/"
+        }
+    }
+}
