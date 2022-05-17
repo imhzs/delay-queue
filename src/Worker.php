@@ -78,17 +78,14 @@ class Worker
     {
         $masterPid = empty($srv->master_pid) ? posix_getpid() : $srv->master_pid;
         $this->setMasterPid($masterPid);
-        $lock = self::$container->make(\swoole_lock::class);
 
         while (true) {
-            $lock->lock();
             if (is_callable($this->onWorkerStart)) {
                 call_user_func($this->onWorkerStart, self::$container);
             }
 
             Timer::tick();
             self::$container->make(Manager::class)->handleReadyQueue();
-            $lock->unlock();
         }
     }
 
@@ -108,7 +105,7 @@ class Worker
         self::$container = Container::getInstance();
         self::$container->singleton(Manager::class);
         self::$container->make(Manager::class);
-        self::$container->instance(\swoole_lock::class, new \swoole_lock(SWOOLE_MUTEX));
+        self::$container->singleton(RedisLock::class);
     }
 
     protected function start()
