@@ -23,8 +23,11 @@ class Timer
     {
         $redisLock = Container::getInstance()->get(RedisLock::class);
         if ($redisLock->get()) {
-            self::release();
-            $redisLock->release();
+            try {
+                self::release();
+            } finally {
+                $redisLock->release();
+            }
         }
     }
 
