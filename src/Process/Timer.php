@@ -8,6 +8,7 @@ use Lazy\DelayQueue\JobPool;
 use Lazy\DelayQueue\Container;
 use Lazy\DelayQueue\RedisLock;
 use Lazy\DelayQueue\ReadyQueue;
+user Lazy\DelayQueue\RedisLock;
 use Lazy\DelayQueue\Contracts\JobInterface;
 
 class Timer
@@ -20,7 +21,11 @@ class Timer
      */
     public static function tick()
     {
-        self::release();
+        $redisLock = Container::getInstance()->sin(RedisLock::class);
+        if ($redisLock->get()) {
+            self::release();
+            $redisLock->release();
+        }
     }
 
     /**
