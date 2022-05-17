@@ -21,7 +21,7 @@ class Timer
      */
     public static function tick()
     {
-        $redisLock = Container::getInstance()->sin(RedisLock::class);
+        $redisLock = Container::getInstance()->get(RedisLock::class);
         if ($redisLock->get()) {
             self::release();
             $redisLock->release();
